@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UI.EditPostActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_1sdp"
+        app:title=" ">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:onClick="cancelEdit"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/colorBlack" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/title_editpost"
+            android:fontFamily="@font/nunitosans_bold"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_13sdp"
+            android:layout_marginTop="@dimen/_3sdp">
+
+            <EditText
+                android:id="@+id/edtTitleEditPost"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/background"
+                android:hint="Masukkan title.."
+                android:fontFamily="@font/nunitosans_smbold"
+                android:gravity="left"
+                android:inputType="textMultiLine"
+                android:maxLength="50"
+                android:padding="@dimen/_6sdp"
+                android:textColorHint="@color/colorLightGrey"
+                android:textSize="@dimen/_12ssp" />
+
+            <EditText
+                android:id="@+id/edtDescEditPost"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_120sdp"
+                android:background="@drawable/background"
+                android:fontFamily="@font/nunitosans_smbold"
+                android:hint="Mulai menulis.."
+                android:textColorHint="@color/colorLightGrey"
+                android:gravity="left"
+                android:inputType="textMultiLine"
+                android:maxLength="1500"
+                android:padding="@dimen/_6sdp"
+                android:textSize="@dimen/_12ssp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:text="@string/btn_editpost"
+                android:id="@+id/btnEditPost"
+                android:background="@drawable/btn_shape_round"
+                android:textColor="@color/colorHitamMuda"
+                android:fontFamily="@font/nunitosans_bold"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:textSize="@dimen/_14ssp"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

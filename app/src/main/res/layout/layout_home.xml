@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbarHomeFrag"
+        android:elevation="@dimen/_1sdp"
+        android:theme="@style/Theme.BottomAppbar"
+        app:title=" ">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Blogs"
+            android:fontFamily="@font/nunitosans_bold"
+            android:textColor="@color/colorHitamMuda"
+            android:textSize="@dimen/_15ssp"/>
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeHomeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_506sdp"
+        android:layout_below="@id/toolbarHomeFrag">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHomeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

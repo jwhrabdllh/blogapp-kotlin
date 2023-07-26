@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_10sdp"
+    tools:context=".UI.SignUpPhotoActivity">
+
+    <TextView
+        android:id="@+id/tvAddPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/nunitosans_bold"
+        android:gravity="center"
+        android:text="@string/photo"
+        android:textColor="@color/colorHitamMuda"
+        android:textSize="@dimen/_17ssp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="37dp"
+        android:fontFamily="@font/nunitosans_smbold"
+        tools:text="@string/selamat_datang"
+        android:textColor="@color/colorHitamMuda"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddPhoto" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="@dimen/_125sdp"
+        android:layout_height="@dimen/_125sdp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/photo_profile"
+        android:id="@+id/ivProfile"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/ivAddProfile"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/shape_eclipse_sky"
+        app:layout_constraintBottom_toBottomOf="@+id/ivProfile"
+        app:layout_constraintEnd_toEndOf="@+id/ivProfile"
+        app:srcCompat="@drawable/ic_btn_upload" />
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/btn_shape_round"
+        android:fontFamily="@font/nunitosans_bold"
+        android:text="@string/lanjutkan"
+        android:textAllCaps="false"
+        android:textColor="@color/colorFontButton"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

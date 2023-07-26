@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">MyBlog App</string>
+    <string name="sign_in">Sign In</string>
+    <string name="login">Login</string>
+    <string name="daftar">Daftar</string>
+    <string name="no_account">Belum punya akun?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="photo">Photo</string>
+    <string name="selamat_datang">Selamat Datang,\nJawahiir Abdillah</string>
+    <string name="lanjutkan">Lanjutkan</string>
+    <string name="edit_menu_options">Edit</string>
+    <string name="delete_menu_options">Delete</string>
+    <string name="post_name">Jawahiir Abdillah</string>
+    <string name="post_title">Sejarah Pembuatan Bom Atom AS</string>
+    <string name="post_date">1 jam yang lalu</string>
+    <string name="post_desc">Deskripsi tentang pembuatan bom atom di Amerika Serikat.</string>
+    <string name="post_like">15 suka</string>
+    <string name="post_comment">10 komentar</string>
+    <string name="title_comment">Komentar</string>
+    <string name="title_editpost">Edit Post</string>
+    <string name="btn_editpost">Simpan</string>
+    <string name="title_add_post">Tambah Postingan</string>
+    <string name="pilih_foto">Pilih foto</string>
+    <string name="btn_add_post" />
+    <string name="btn_upload_post">Upload</string>
+</resources>
