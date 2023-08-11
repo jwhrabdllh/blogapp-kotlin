@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UI.EditPostActivity">
+    tools:context=".ui.activity.EditPostActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -26,9 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/title_editpost"
-            android:fontFamily="@font/nunitosans_bold"
+            android:fontFamily="@font/karla_bold"
             android:textColor="@color/colorBlack"
-            android:textSize="18sp" />
+            android:textSize="@dimen/_16ssp" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -40,48 +40,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/_13sdp"
+            android:padding="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_3sdp">
 
             <EditText
                 android:id="@+id/edtTitleEditPost"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_marginBottom="@dimen/_14sdp"
                 android:background="@drawable/background"
                 android:hint="Masukkan title.."
-                android:fontFamily="@font/nunitosans_smbold"
+                android:fontFamily="@font/karla_smbold"
                 android:gravity="left"
                 android:inputType="textMultiLine"
-                android:maxLength="50"
+                android:maxLength="100"
                 android:padding="@dimen/_6sdp"
                 android:textColorHint="@color/colorLightGrey"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_13ssp" />
 
             <EditText
                 android:id="@+id/edtDescEditPost"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_120sdp"
                 android:background="@drawable/background"
-                android:fontFamily="@font/nunitosans_smbold"
+                android:fontFamily="@font/karla_smbold"
                 android:hint="Mulai menulis.."
                 android:textColorHint="@color/colorLightGrey"
                 android:gravity="left"
                 android:inputType="textMultiLine"
                 android:maxLength="1500"
                 android:padding="@dimen/_6sdp"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_13ssp" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:text="@string/btn_editpost"
                 android:id="@+id/btnEditPost"
                 android:background="@drawable/btn_shape_round"
-                android:textColor="@color/colorHitamMuda"
-                android:fontFamily="@font/nunitosans_bold"
-                android:layout_marginTop="@dimen/_22sdp"
-                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/karla_bold"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:textSize="@dimen/_15ssp"
                 android:textAllCaps="false"/>
 
         </LinearLayout>

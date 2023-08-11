@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,28 +19,38 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".UI.EditPostActivity"
+            android:name=".ui.activity.PostDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.CommentActivity"
+            android:name=".ui.activity.LikeActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.AddPostActivity"
+            android:name=".ui.activity.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.SignUpPhotoActivity"
+            android:name=".ui.activity.EditPostActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.SignUpActivity"
+            android:name=".ui.activity.CommentActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.activity.AddPostActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.SignInActivity"
+            android:name=".ui.activity.SignUpPhotoActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.HomeActivity"
+            android:name=".ui.activity.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".UI.SplashScreenActivity"
+            android:name=".ui.activity.SignInActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.activity.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

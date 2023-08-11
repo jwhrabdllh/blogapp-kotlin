@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/_20sdp"
     android:paddingRight="@dimen/_20sdp"
-    tools:context=".UI.SignInActivity">
+    tools:context=".ui.activity.SignInActivity">
 
     <ImageView
         android:layout_width="@dimen/_120sdp"
@@ -19,27 +19,28 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_14sdp"
-        android:fontFamily="@font/nunitosans_bold"
+        android:layout_marginTop="@dimen/_18sdp"
+        android:layout_marginBottom="@dimen/_18sdp"
+        android:fontFamily="@font/karla_bold"
         android:textColor="@color/colorHitamMuda"
         android:text="@string/sign_in"
-        android:textSize="@dimen/_20ssp" />
+        android:textSize="@dimen/_21ssp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtLayoutEmailLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_9sdp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtEmailLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorHitamMuda"
             android:hint="Email"
+            android:textSize="@dimen/_15ssp"
             android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -49,16 +50,17 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_43sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtPasswordLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorHitamMuda"
             android:hint="Password"
+            android:textSize="@dimen/_15ssp"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,12 +68,12 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
-        android:layout_marginBottom="@dimen/_47sdp"
+        android:layout_marginBottom="@dimen/_45sdp"
         android:background="@drawable/btn_shape_round"
-        android:fontFamily="@font/nunitosans_bold"
+        android:fontFamily="@font/karla_bold"
         android:text="@string/login"
         android:textAllCaps="false"
-        android:textColor="@color/colorFontButton"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/_15ssp" />
 
     <LinearLayout
@@ -84,19 +86,19 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:fontFamily="@font/karla_smbold"
             android:text="@string/no_account"
-            android:textSize="@dimen/_13ssp" />
+            android:textSize="@dimen/_14ssp" />
 
         <TextView
             android:id="@+id/tvDaftar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_6sdp"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:fontFamily="@font/karla_smbold"
             android:text="@string/daftar"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_13ssp" />
+            android:textSize="@dimen/_14ssp" />
 
     </LinearLayout>
 

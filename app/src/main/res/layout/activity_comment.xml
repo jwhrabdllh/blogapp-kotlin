@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.CommentActivity">
+    tools:context=".ui.activity.CommentActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbarComment"
@@ -18,27 +18,28 @@
             android:src="@drawable/ic_arrow_back"
             android:background="@android:color/transparent"
             android:onClick="goBack"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:text="@string/title_comment"
-            android:textSize="@dimen/_15ssp"
-            android:fontFamily="@font/nunitosans_bold"
+            android:textSize="@dimen/_16ssp"
+            android:fontFamily="@font/karla_bold"
             android:textColor="@color/colorHitamMuda"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeComment"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_506sdp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llComment"
         android:layout_below="@id/toolbarComment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerComments"
+            android:id="@+id/rvComments"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
@@ -47,19 +48,22 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
+        android:id="@+id/llComment"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white"
+        android:elevation="4dp">
 
         <EditText
-            android:id="@+id/tvAddComment"
+            android:id="@+id/edtAddComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="bottom"
             android:layout_marginStart="@dimen/_6sdp"
-            android:layout_marginBottom="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
             android:hint="Komentar.."
             android:textColor="@color/colorHitamMuda"
             android:textColorHint="@color/colorLightGrey"
@@ -67,17 +71,14 @@
             android:inputType="textMultiLine"
             android:textSize="@dimen/_14ssp" />
 
-        <ImageButton
-            android:id="@+id/btnAddComment"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:background="@android:color/transparent"
+        <ImageView
+            android:layout_width="@dimen/_27sdp"
+            android:layout_height="@dimen/_27sdp"
             android:layout_gravity="center_vertical"
-            android:layout_marginBottom="@dimen/_6sdp"
-            android:onClick="addComment"
+            android:layout_marginEnd="@dimen/_6sdp"
             android:src="@drawable/ic_send"
-            app:tint="@color/colorBlack" />
+            android:onClick="addComment"
+            app:tint="@color/colorPrimary" />
 
     </LinearLayout>
 

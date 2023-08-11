@@ -1,0 +1,154 @@
+package com.abdi.blogapp.ui.activity
+
+import android.app.ProgressDialog
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Patterns
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import com.abdi.blogapp.R
+import com.abdi.blogapp.data.api.ApiConfig
+import com.abdi.blogapp.utils.Constant
+import com.abdi.blogapp.data.api.ApiService
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+class SignInActivity : AppCompatActivity() {
+    private lateinit var layoutEmail: TextInputLayout
+    private lateinit var layoutPassword: TextInputLayout
+    private lateinit var edtEmail: TextInputEditText
+    private lateinit var edtPassword: TextInputEditText
+    private lateinit var btnLogin: Button
+    private lateinit var tvDaftar: TextView
+    private lateinit var dialog: ProgressDialog
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_sign_in)
+        init()
+    }
+
+    private fun init() {
+        layoutPassword = findViewById(R.id.txtLayoutPasswordLogin)
+        layoutEmail = findViewById(R.id.txtLayoutEmailLogin)
+        edtPassword = findViewById(R.id.txtPasswordLogin)
+        tvDaftar = findViewById(R.id.tvDaftar)
+        edtEmail = findViewById(R.id.txtEmailLogin)
+        btnLogin = findViewById(R.id.btnLogin)
+        dialog = ProgressDialog(this)
+        dialog.setCancelable(false)
+
+        tvDaftar.setOnClickListener {
+            startActivity(Intent(this, SignUpActivity::class.java))
+        }
+
+        btnLogin.setOnClickListener {
+            if (validate()) {
+                login()
+            }
+        }
+
+        edtEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (!edtEmail.text.toString().isEmpty()) {
+                    layoutEmail.error = null
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val email = edtEmail.text.toString()
+
+                if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    layoutEmail.error = null
+                } else {
+                    layoutEmail.error = "Email tidak valid"
+                }
+            }
+        })
+
+        edtPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (edtPassword.text.toString().length > 6) {
+                    layoutPassword.error = null
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun validate(): Boolean {
+        if (edtEmail.text.toString().isEmpty()) {
+            layoutEmail.error = "Email harus diisi"
+            return false
+        }
+        if (edtPassword.text.toString().length < 6) {
+            layoutPassword.error = "Password minimal 6 karakter"
+            return false
+        }
+        return true
+    }
+
+    private fun login() {
+        dialog.setMessage("Loading..")
+        dialog.show()
+
+        val email = edtEmail.text.toString().trim()
+        val password = edtPassword.text.toString().trim()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val response = ApiConfig.apiService.login(email, password)
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        val loginResponse = response.body()
+                        if (loginResponse == null || !loginResponse.success) {
+                            Toast.makeText(this@SignInActivity, "Email atau password salah", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val user = loginResponse.user
+                            if (user != null) {
+                                val userPref = getSharedPreferences("user", MODE_PRIVATE)
+                                val editor = userPref.edit()
+                                editor.putInt("id", user.id)
+                                editor.putString("token", loginResponse.token)
+                                editor.putString("name", user.name)
+                                editor.putString("lastname", user.lastname)
+                                editor.putString("email", user.email)
+                                editor.putString("photo", user.photo)
+                                editor.putBoolean("isLogin", true)
+                                editor.apply()
+
+                                startActivity(Intent(this@SignInActivity, HomeActivity::class.java))
+                                finish()
+                                Toast.makeText(this@SignInActivity, "Login sukses", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this@SignInActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    }
+                    dialog.dismiss()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@SignInActivity, "Kesalahan koneksi", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+            }
+        }
+    }
+}

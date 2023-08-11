@@ -1,38 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tbHomeFrag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbarHomeFrag"
         android:elevation="@dimen/_1sdp"
         android:theme="@style/Theme.BottomAppbar"
         app:title=" ">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Blogs"
-            android:fontFamily="@font/nunitosans_bold"
-            android:textColor="@color/colorHitamMuda"
-            android:textSize="@dimen/_15ssp"/>
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Blogs"-->
+<!--            android:fontFamily="@font/karla_bold"-->
+<!--            android:textColor="@color/colorHitamMuda"-->
+<!--            android:textSize="@dimen/_16ssp" />-->
+
+        <ImageView
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/logoapp"
+            android:scaleType="fitCenter"/>
 
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeHomeFragment"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_506sdp"
-        android:layout_below="@id/toolbarHomeFrag">
+        android:layout_height="@dimen/_507sdp"
+        android:layout_below="@id/tbHomeFrag">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvHomeFragment"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/llSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/edtSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_42sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@drawable/bg_search"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_search"
+                    android:focusable="true"
+                    android:fontFamily="@font/montserrat_smbold"
+                    android:hint="@string/name_search"
+                    android:paddingStart="@dimen/_18sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:textSize="@dimen/_13ssp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHomeFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UI.AddPostActivity">
+    tools:context=".ui.activity.AddPostActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -25,9 +25,9 @@
             android:layout_height="wrap_content"
             android:text="@string/title_add_post"
             android:layout_gravity="center"
-            android:fontFamily="@font/nunitosans_bold"
+            android:fontFamily="@font/karla_bold"
             android:textColor="@color/colorHitamMuda"
-            android:textSize="@dimen/_15ssp" />
+            android:textSize="@dimen/_16ssp" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -40,66 +40,66 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_3sdp"
             android:orientation="vertical"
-            android:padding="@dimen/_13sdp">
+            android:padding="@dimen/_15sdp">
 
             <ImageView
+                android:id="@+id/ivAddPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:id="@+id/ivAddPost"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp"
+                android:adjustViewBounds="true" />
 
             <TextView
-                android:onClick="addPhoto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_15sdp"
-                android:fontFamily="@font/nunitosans_bold"
+                android:fontFamily="@font/karla_bold"
                 android:gravity="center_horizontal"
+                android:onClick="addPhoto"
                 android:text="@string/pilih_foto"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_14ssp" />
 
             <EditText
                 android:id="@+id/edtTitleAddPost"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_height="@dimen/_32sdp"
+                android:layout_marginBottom="@dimen/_14sdp"
                 android:background="@drawable/background"
-                android:hint="Masukkan title"
-                android:fontFamily="@font/nunitosans_smbold"
-                android:gravity="left"
+                android:fontFamily="@font/karla_smbold"
+                android:hint="Masukkan judul"
                 android:inputType="textMultiLine"
-                android:maxLength="50"
+                android:maxLength="100"
                 android:padding="@dimen/_6sdp"
                 android:textColorHint="@color/colorLightGrey"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_13ssp" />
 
             <EditText
                 android:id="@+id/edtDescAddPost"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_120sdp"
                 android:background="@drawable/background"
-                android:fontFamily="@font/nunitosans_smbold"
+                android:fontFamily="@font/karla_smbold"
                 android:gravity="left"
                 android:hint="Mulai menulis.."
                 android:inputType="textMultiLine"
                 android:maxLength="1500"
                 android:padding="@dimen/_6sdp"
                 android:textColorHint="@color/colorLightGrey"
-                android:textSize="@dimen/_12ssp" />
+                android:textSize="@dimen/_13ssp" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnUpload"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
-                android:layout_marginTop="@dimen/_22sdp"
+                android:layout_marginTop="@dimen/_50sdp"
                 android:background="@drawable/btn_shape_round"
-                android:fontFamily="@font/nunitosans_bold"
+                android:baselineAligned="false"
+                android:fontFamily="@font/karla_bold"
                 android:text="@string/btn_upload_post"
                 android:textAllCaps="false"
-                android:textColor="@color/colorFontButton"
-                android:textSize="@dimen/_14ssp" />
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_15ssp" />
 
         </LinearLayout>
 

@@ -8,13 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="colorPrimary">#EABD79</color>
+    <color name="colorPrimary">#0E8D88</color>
+    <color name="colorButtonBottom">#EABD79</color>
     <color name="colorPrimaryGrey">#416985</color>
     <color name="colorPrimaryDark">#dddddd</color>
     <color name="colorAccent">#0E0E0E</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorBlack">#0E0E0E</color>
-    <color name="colorFontButton">#212121</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorFontButton">#141414</color>
     <color name="colorFloatingButton">#383838</color>
     <color name="colorHitamMuda">#191919</color>
     <color name="colorGrey">#666666</color>
@@ -22,4 +23,5 @@
     <color name="colorRed">#E72813</color>
     <color name="colorBackground">#243447</color>
     <color name="colorSky">#98C5EB</color>
+    <color name="colorButton">#1B1D25</color>
 </resources>

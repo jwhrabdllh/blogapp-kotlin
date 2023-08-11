@@ -7,31 +7,32 @@
     android:paddingRight="@dimen/_20sdp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.SignUpActivity">
+    tools:context=".ui.activity.SignUpActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_30sdp"
         android:layout_marginBottom="@dimen/_25sdp"
-        android:fontFamily="@font/nunitosans_bold"
+        android:fontFamily="@font/karla_bold"
         android:textColor="@color/colorHitamMuda"
         android:text="@string/sign_up"
-        android:textSize="@dimen/_20ssp" />
+        android:textSize="@dimen/_21ssp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtLayoutName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/_6sdp"
+        android:layout_marginBottom="@dimen/_9sdp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtEdtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nama depan"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:hint="@string/nama_depan"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorHitamMuda"
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -40,15 +41,16 @@
         android:id="@+id/txtLayoutLastname"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/_6sdp"
+        android:layout_marginBottom="@dimen/_9sdp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/txtEdtLastname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nama belakang"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:hint="@string/nama_belakang"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorHitamMuda"
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -57,7 +59,7 @@
         android:id="@+id/txtLayoutEmailDaftar"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/_6sdp"
+        android:layout_marginBottom="@dimen/_9sdp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -65,7 +67,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorHitamMuda"
             android:inputType="textEmailAddress"/>
 
@@ -75,7 +78,7 @@
         android:id="@+id/txtLayoutPasswordDaftar"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/_45sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
         app:passwordToggleEnabled="true"
         android:layout_height="wrap_content">
 
@@ -83,9 +86,10 @@
             android:id="@+id/txtEdtPasswordDaftar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorHitamMuda"
             android:hint="Password"
+            android:textSize="@dimen/_14ssp"
             android:inputType="textPassword" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -96,10 +100,10 @@
         android:layout_height="@dimen/_40sdp"
         android:text="Daftar"
         android:background="@drawable/btn_shape_round"
-        android:textColor="@color/colorFontButton"
-        android:fontFamily="@font/nunitosans_bold"
-        android:layout_marginBottom="@dimen/_35sdp"
-        android:textSize="@dimen/_14ssp"
+        android:textColor="@color/colorWhite"
+        android:fontFamily="@font/karla_bold"
+        android:layout_marginBottom="@dimen/_45sdp"
+        android:textSize="@dimen/_15ssp"
         android:textAllCaps="false"/>
 
     <LinearLayout
@@ -112,19 +116,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sudah punya akun?"
-            android:textSize="@dimen/_13ssp"
-            android:fontFamily="@font/nunitosans_smbold"
-            android:layout_marginRight="@dimen/_5sdp"/>
+            android:textSize="@dimen/_14ssp"
+            android:fontFamily="@font/karla_smbold"
+            android:layout_marginEnd="@dimen/_5sdp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorPrimary"
             android:id="@+id/tvLogin"
-            android:textSize="@dimen/_13ssp"
-            android:layout_marginRight="@dimen/_6sdp"/>
+            android:textSize="@dimen/_14ssp"
+            android:layout_marginEnd="@dimen/_6sdp"/>
     </LinearLayout>
 
 </LinearLayout>
