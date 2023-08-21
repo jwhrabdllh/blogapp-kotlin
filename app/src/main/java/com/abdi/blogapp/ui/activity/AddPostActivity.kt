@@ -1,6 +1,7 @@
 package com.abdi.blogapp.ui.activity
 
 import android.Manifest
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.SharedPreferences
@@ -21,14 +22,19 @@ import androidx.core.content.ContextCompat
 import com.abdi.blogapp.ui.fragment.HomeFragment
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
+import com.google.android.material.snackbar.Snackbar
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
 
 class AddPostActivity : AppCompatActivity() {
+    private lateinit var view: View
     private lateinit var dialog: ProgressDialog
     private lateinit var sharedPref: SharedPreferences
     private lateinit var btnPost: Button
@@ -62,10 +68,10 @@ class AddPostActivity : AppCompatActivity() {
             val title = edtTitle.text.toString().trim()
 
             if (desc.isEmpty() || title.isEmpty()) {
-                Toast.makeText(this, "Judul dan deskripsi harus diisi!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Judul dan deskripsi tidak boleh kosong", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else if (bitmap == null) {
-                Toast.makeText(this, "Foto harus diunggah!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Wajib menambahkan photo", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             post()
@@ -81,12 +87,14 @@ class AddPostActivity : AppCompatActivity() {
         val desc = edtDesc.text.toString().trim()
 
         val token = sharedPref.getString("token", "") ?: ""
-        if (token.isEmpty()) {
-            Toast.makeText(this@AddPostActivity, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_SHORT).show()
-            redirectToLogin()
+        val authorization = "Bearer $token"
+
+        val isImageSizeValid = bitmap?.let { validateImageSize(it) } ?: false
+        if (!isImageSizeValid) {
+            Toast.makeText(this@AddPostActivity, "Ukuran gambar terlalu besar", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
             return
         }
-        val authorization = "Bearer $token"
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -104,8 +112,12 @@ class AddPostActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(this@AddPostActivity, "Gagal menambahkan post", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(this@AddPostActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 422 && response.code() == 401) {
+                        val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Login") {
+                            redirectToLogin()
+                        }
+                        snackbar.show()
                     }
                     dialog.dismiss()
                 }
@@ -117,6 +129,15 @@ class AddPostActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun validateImageSize(bitmap: Bitmap): Boolean {
+        val maxSizeKB = 500
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val array = byteArrayOutputStream.toByteArray()
+        val fileSizeInKB = array.size / 1024
+        return fileSizeInKB <= maxSizeKB
     }
 
     private fun bitmapToString(bitmap: Bitmap?): String {
@@ -143,7 +164,7 @@ class AddPostActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermissionAndSelectPhoto() {
+    private fun checkPermissionPhoto() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
@@ -160,7 +181,7 @@ class AddPostActivity : AppCompatActivity() {
     }
 
     fun addPhoto(view: View) {
-        checkPermissionAndSelectPhoto()
+        checkPermissionPhoto()
     }
 
     fun goBack(view: View) {
@@ -168,9 +189,7 @@ class AddPostActivity : AppCompatActivity() {
     }
 
     private fun redirectToLogin() {
-        sharedPref.edit()
-            .remove("token")
-            .apply()
+        sharedPref.edit().remove("token").apply()
 
         val intent = Intent(this, SignInActivity::class.java)
         startActivity(intent)

@@ -1,20 +1,22 @@
 package com.abdi.blogapp.ui.adapter
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
+import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.ui.activity.*
 import com.abdi.blogapp.utils.Constant
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
@@ -22,17 +24,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PostAdapter(private val context: Context, private val list: ArrayList<Post>) :
-    RecyclerView.Adapter<PostAdapter.PostsHolder>() {
+class PostLinearAdapter(private val context: Context, private val list: ArrayList<Post>) :
+    RecyclerView.Adapter<PostLinearAdapter.PostsHolder>() {
+    inner class PostsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvName: TextView = itemView.findViewById(R.id.tvPostName)
+        val tvDate: TextView = itemView.findViewById(R.id.tvPostDate)
+        val tvTitle: TextView = itemView.findViewById(R.id.tvPostTitle)
+        val tvDesc: TextView = itemView.findViewById(R.id.tvPostDesc)
+        val tvLike: TextView = itemView.findViewById(R.id.tvPostLikes)
+        val tvComments: TextView = itemView.findViewById(R.id.tvPostComments)
+        val imgProfile: CircleImageView = itemView.findViewById(R.id.ivPostProfile)
+        val imgPost: ImageView = itemView.findViewById(R.id.ivPostPhoto)
+        val btnLike: ImageButton = itemView.findViewById(R.id.btnPostLike)
+        val btnComment: ImageButton = itemView.findViewById(R.id.btnPostComment)
+    }
 
-    private val sharedPref: SharedPreferences = context.applicationContext.getSharedPreferences("user", MODE_PRIVATE)
+    private lateinit var view: View
+    private val sharedPref: SharedPreferences = context.applicationContext.getSharedPreferences("user",
+        Context.MODE_PRIVATE
+    )
 
     companion object {
         const val POST_DETAIL_REQUEST_CODE = 7
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_posts, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_posts_linear, parent, false)
         return PostsHolder(view)
     }
 
@@ -50,10 +67,10 @@ class PostAdapter(private val context: Context, private val list: ArrayList<Post
         setDescription(holder, post)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context as HomeActivity, PostDetailActivity::class.java)
+            val intent = Intent(context, PostDetailActivity::class.java)
             intent.putExtra("post", post)
             intent.putExtra("position", position)
-            context.startActivityForResult(intent, POST_DETAIL_REQUEST_CODE)
+            (context as PostLinearActivity).startActivityForResult(intent, POST_DETAIL_REQUEST_CODE)
         }
 
         holder.btnLike.setOnClickListener {
@@ -64,11 +81,6 @@ class PostAdapter(private val context: Context, private val list: ArrayList<Post
             val postId = post.id
 
             val token = sharedPref.getString("token", "") ?: ""
-            if (token.isEmpty()) {
-                Toast.makeText(context, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_SHORT).show()
-                redirectToLogin()
-                return@setOnClickListener
-            }
             val authorization = "Bearer $token"
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -89,6 +101,12 @@ class PostAdapter(private val context: Context, private val list: ArrayList<Post
                                     if (post.selfLike) R.drawable.ic_fav_red else R.drawable.ic_fav_border
                                 )
                             }
+                        } else if (response.code() == 422 && response.code() == 401) {
+                            val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                            snackbar.setAction("Login") {
+                                redirectToLogin()
+                            }
+                            snackbar.show()
                         }
                     }
                 } catch (e: Exception) {
@@ -116,23 +134,18 @@ class PostAdapter(private val context: Context, private val list: ArrayList<Post
         return list.size
     }
 
-    inner class PostsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvName: TextView = itemView.findViewById(R.id.tvPostName)
-        val tvDate: TextView = itemView.findViewById(R.id.tvPostDate)
-        val tvTitle: TextView = itemView.findViewById(R.id.tvPostTitle)
-        val tvDesc: TextView = itemView.findViewById(R.id.tvPostDesc)
-        val tvLike: TextView = itemView.findViewById(R.id.tvPostLikes)
-        val tvComments: TextView = itemView.findViewById(R.id.tvPostComments)
-        val imgProfile: CircleImageView = itemView.findViewById(R.id.ivPostProfile)
-        val imgPost: ImageView = itemView.findViewById(R.id.ivPostPhoto)
-        val btnLike: ImageButton = itemView.findViewById(R.id.btnPostLike)
-        val btnComment: ImageButton = itemView.findViewById(R.id.btnPostComment)
+    fun addList(items: ArrayList<Post>) {
+        list.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        list.clear()
+        notifyDataSetChanged()
     }
 
     private fun redirectToLogin() {
-        sharedPref.edit()
-            .remove("token")
-            .apply()
+        sharedPref.edit().remove("token").apply()
 
         val intent = Intent(context, SignInActivity::class.java)
         context.startActivity(intent)

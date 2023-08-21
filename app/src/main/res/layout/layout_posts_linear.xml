@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_15sdp"
     android:layout_marginEnd="@dimen/_15sdp"
-    android:layout_marginTop="@dimen/_15sdp"
-    android:layout_marginBottom="@dimen/_9sdp"
+    android:layout_marginTop="@dimen/_18sdp"
+    android:layout_marginBottom="@dimen/_7sdp"
     app:cardElevation="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_10sdp"
     android:focusable="true">
@@ -29,7 +29,7 @@
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginStart="@dimen/_3sdp"
                 android:id="@+id/ivPostProfile"
-                android:src="@color/colorLightGrey"/>
+                android:src="@drawable/photo_profile"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -57,19 +57,20 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_9sdp"
+            android:layout_marginBottom="@dimen/_9sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:lineHeight="@dimen/_17sdp"
             android:fontFamily="@font/averia_bold"
             android:textColor="@color/colorBlack"
             android:text="@string/post_title"
-            android:maxLength="50"
+            android:maxLength="100"
             android:textSize="@dimen/_16ssp" />
 
         <TextView
             android:id="@+id/tvPostDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_11sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:lineHeight="@dimen/_17sdp"
@@ -84,8 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_9sdp"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_7sdp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             app:shapeAppearanceOverlay="@style/RoundedImageView"

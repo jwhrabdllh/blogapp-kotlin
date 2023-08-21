@@ -10,12 +10,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
 import com.abdi.blogapp.model.Comment
 import com.abdi.blogapp.model.Post
-import com.abdi.blogapp.ui.adapter.PostAdapter
 import com.abdi.blogapp.utils.Constant
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView

@@ -25,6 +25,7 @@ import com.abdi.blogapp.ui.activity.SignInActivity
 import com.abdi.blogapp.ui.adapter.ProfileAdapter
 import com.abdi.blogapp.utils.Constant
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
@@ -128,10 +129,12 @@ class ProfileFragment : Fragment() {
                             recyclerView.adapter = adapter
                             imgUrl = Constant.BASE_URL + "storage/profiles/" + mUser.photo
                         }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(requireContext(), "Gagal memuat data", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 422 && response.code() == 401) {
+                        val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Login") {
+                            redirectToLogin()
                         }
+                        snackbar.show()
                     }
                 }
             } catch (e: Exception) {
@@ -184,10 +187,16 @@ class ProfileFragment : Fragment() {
 
                             startActivity(Intent(requireContext(), SignInActivity::class.java))
                             requireActivity().finish()
+                        } else {
+                            Toast.makeText(requireContext(), "Gagal logout", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
                         }
-                    } else {
-                        Toast.makeText(requireContext(), "Gagal logout", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
+                    } else if (response.code() == 422 && response.code() == 401) {
+                        val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Login") {
+                            redirectToLogin()
+                        }
+                        snackbar.show()
                     }
                     dialog.dismiss()
                 }
@@ -213,9 +222,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun redirectToLogin() {
-        sharedPref.edit()
-            .remove("token")
-            .apply()
+        sharedPref.edit().remove("token").apply()
 
         val intent = Intent(requireContext(), SignInActivity::class.java)
         startActivity(intent)

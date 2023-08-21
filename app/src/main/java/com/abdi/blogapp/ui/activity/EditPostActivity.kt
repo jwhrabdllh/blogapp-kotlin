@@ -20,6 +20,7 @@ import com.android.volley.RetryPolicy
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ import org.json.JSONObject
 class EditPostActivity : AppCompatActivity() {
     private var position = 0
     private var id = 0
+    private lateinit var view: View
     private lateinit var edtDesc: EditText
     private lateinit var edtTitle: EditText
     private lateinit var btnSave: Button
@@ -71,11 +73,6 @@ class EditPostActivity : AppCompatActivity() {
         val desc = edtDesc.text.toString().trim()
 
         val token = sharedPref.getString("token", "") ?: ""
-        if (token.isEmpty()) {
-            Toast.makeText(this, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_SHORT).show()
-            redirectToLogin()
-            return
-        }
         val authorization = "Bearer $token"
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -101,8 +98,12 @@ class EditPostActivity : AppCompatActivity() {
                             finish()
 
                         }
-                    } else {
-                        Toast.makeText(this@EditPostActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 422 && response.code() == 401) {
+                        val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Login") {
+                            redirectToLogin()
+                        }
+                        snackbar.show()
                     }
                     dialog.dismiss()
                 }
@@ -121,9 +122,7 @@ class EditPostActivity : AppCompatActivity() {
     }
 
     private fun redirectToLogin() {
-        sharedPref.edit()
-            .remove("token")
-            .apply()
+        sharedPref.edit().remove("token").apply()
 
         val intent = Intent(this, SignInActivity::class.java)
         startActivity(intent)

@@ -40,6 +40,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var btnDaftar: Button
     private lateinit var tvLogin: TextView
     private lateinit var dialog: ProgressDialog
+    private val errorValidation: MutableList<String> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +67,8 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         btnDaftar.setOnClickListener {
-            if (validate()) {
+            validate()
+            if (errorValidation.isEmpty()) {
                 register()
             }
         }
@@ -112,7 +114,7 @@ class SignUpActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (edtPassword.text.toString().length > 6) {
+                if (edtPassword.text.toString().length >= 6) {
                     layoutPassword.error = null
                 }
             }
@@ -122,23 +124,41 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun validate(): Boolean {
+        errorValidation.clear()
+
         if (edtName.text.toString().isEmpty()) {
-            layoutName.error = "Nama depan harus diisi"
-            return false
+            errorValidation.add("Nama depan")
         }
         if (edtLastname.text.toString().isEmpty()) {
-            layoutLastname.error = "Nama belakang harus diisi"
-            return false
+            errorValidation.add("Nama belakang")
         }
         if (edtEmail.text.toString().isEmpty()) {
-            layoutEmail.error = "Email harus diisi"
-            return false
+            errorValidation.add("Email")
         }
         if (edtPassword.text.toString().length < 6) {
-            layoutPassword.error = "Password minimal 6 karakter"
+            errorValidation.add("Password")
+        }
+
+        if (errorValidation.isNotEmpty()) {
+            showMessageErrorValidation()
             return false
         }
         return true
+    }
+
+    private fun showMessageErrorValidation() {
+        if (errorValidation.contains("Nama depan")) {
+            layoutName.error = "Nama depan tidak boleh kosong"
+        }
+        if (errorValidation.contains("Nama belakang")) {
+            layoutLastname.error = "Nama belakang tidak boleh kosong"
+        }
+        if (errorValidation.contains("Email")) {
+            layoutEmail.error = "Email tidak boleh kosong"
+        }
+        if (errorValidation.contains("Password")) {
+            layoutPassword.error = "Password minimal 6 karakter"
+        }
     }
 
     private fun isEmailValid(email: String): Boolean {
@@ -186,8 +206,8 @@ class SignUpActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(this@SignUpActivity, "Register gagal", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(this@SignUpActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 401 || response.code() == 422 ){
+                        Toast.makeText(this@SignUpActivity, "Email sudah terdaftar", Toast.LENGTH_SHORT).show()
                     }
                     dialog.dismiss()
                 }

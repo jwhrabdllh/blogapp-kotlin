@@ -25,9 +25,9 @@
             android:layout_height="wrap_content"
             android:text="@string/edit_profile"
             android:layout_gravity="center"
-            android:fontFamily="@font/nunitosans_bold"
+            android:fontFamily="@font/karla_bold"
             android:textColor="@color/colorHitamMuda"
-            android:textSize="@dimen/_16ssp" />
+            android:textSize="@dimen/_15ssp" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -38,8 +38,8 @@
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_95sdp"
+            android:layout_height="@dimen/_95sdp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/photo_profile"
             android:id="@+id/ivPhoto"
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/ubah_foto"
-            android:fontFamily="@font/nunitosans_smbold"
+            android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorPrimary"
             android:gravity="center_horizontal"
             android:id="@+id/tvSelectPhoto"
@@ -67,7 +67,7 @@
                 android:id="@+id/txtEditNameProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nunitosans_smbold"
+                android:fontFamily="@font/karla_smbold"
                 android:hint="@string/nama_depan"
                 android:inputType="text"/>
 
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtEditLastnameProfile"
-                android:fontFamily="@font/nunitosans_smbold"
+                android:fontFamily="@font/karla_smbold"
                 android:hint="@string/nama_belakang"
                 android:inputType="text"/>
 
@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtEditEmailProfile"
-                android:fontFamily="@font/nunitosans_smbold"
+                android:fontFamily="@font/karla_smbold"
                 android:hint="@string/email_user"
                 android:inputType="text"/>
 
@@ -113,11 +113,11 @@
         android:layout_height="@dimen/_40sdp"
         android:background="@drawable/btn_shape_round"
         android:elevation="0dp"
-        android:fontFamily="@font/nunitosans_bold"
+        android:fontFamily="@font/karla_bold"
         android:text="@string/btn_simpan_edtprofile"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_14ssp" />
+        android:textSize="@dimen/_15ssp" />
 
     </LinearLayout>
 

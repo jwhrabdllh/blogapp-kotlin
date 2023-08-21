@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.DiscretePathEffect
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -14,7 +13,6 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Base64
-import android.util.Patterns
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -23,19 +21,22 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 class EditProfileActivity : AppCompatActivity() {
+    private lateinit var view: View
     private lateinit var layoutName: TextInputLayout
     private lateinit var layoutLastname: TextInputLayout
     private lateinit var layoutEmail: TextInputLayout
@@ -48,6 +49,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var sharedPref: SharedPreferences
     private lateinit var dialog: ProgressDialog
     private var bitmap: Bitmap? = null
+    private val errorValidation: MutableList<String> = mutableListOf()
 
     companion object {
         private const val GALLERY_CHANGE_PROFILE = 5
@@ -81,11 +83,12 @@ class EditProfileActivity : AppCompatActivity() {
         edtEmail.setText(sharedPref.getString("email", ""))
 
         tvSelectPhoto.setOnClickListener {
-            checkPermissionAndSelectPhoto()
+            checkPermissionPhoto()
         }
 
         btnSave.setOnClickListener {
-            if (validate()) {
+            validate()
+            if (errorValidation.isEmpty()) {
                 updateProfile()
             }
         }
@@ -100,30 +103,39 @@ class EditProfileActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                val email = edtEmail.text.toString()
-
-                if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    layoutEmail.error = null
-                } else {
-                    layoutEmail.error = "Email tidak valid"
-                }
             }
         })
     }
     private fun validate(): Boolean {
+        errorValidation.clear()
+
         if (edtName.text.toString().isEmpty()) {
-            layoutName.error = "Nama depan harus diisi"
-            return false
+            errorValidation.add("Nama depan")
         }
         if (edtLastname.text.toString().isEmpty()) {
-            layoutLastname.error = "Nama belakang harus diisi"
-            return false
+            errorValidation.add("Nama belakang")
         }
         if (edtEmail.text.toString().isEmpty()) {
-            layoutEmail.error = "Email harus diisi"
+            errorValidation.add("Email")
+        }
+
+        if (errorValidation.isNotEmpty()) {
+            showMessageErrorValidation()
             return false
         }
         return true
+    }
+
+    private fun showMessageErrorValidation() {
+        if (errorValidation.contains("Nama depan")) {
+            layoutName.error = "Nama depan tidak boleh kosong"
+        }
+        if (errorValidation.contains("Nama belakang")) {
+            layoutLastname.error = "Nama belakang tidak boleh kosong"
+        }
+        if (errorValidation.contains("Email")) {
+            layoutEmail.error = "Email tidak boleh kosong"
+        }
     }
 
     private fun updateProfile() {
@@ -136,15 +148,22 @@ class EditProfileActivity : AppCompatActivity() {
         val photo = bitmapToString(bitmap)
 
         val token = sharedPref.getString("token", "") ?: ""
-        if (token.isEmpty()) {
-            Toast.makeText(this@EditProfileActivity, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_SHORT).show()
-            redirectToLogin()
-            return
-        }
         val authorization = "Bearer $token"
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
+                val isImageChanged = bitmap != null
+                if (isImageChanged) {
+                    val isImageSizeValid = validateImageSize(bitmap!!)
+                    if (!isImageSizeValid) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@EditProfileActivity, "Ukuran gambar terlalu besar", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                        }
+                        return@launch
+                    }
+                }
+
                 val response = ApiConfig.apiService.editProfile(authorization, name, lastname, email, photo)
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
@@ -163,9 +182,14 @@ class EditProfileActivity : AppCompatActivity() {
                             dialog.dismiss()
                             Toast.makeText(this@EditProfileActivity, "Gagal memperbarui profil", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        dialog.dismiss()
-                        Toast.makeText(this@EditProfileActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 422) {
+                        Toast.makeText(this@EditProfileActivity, "Email sudah terdaftar", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 401) {
+                        val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Login") {
+                            redirectToLogin()
+                        }
+                        snackbar.show()
                     }
                     dialog.dismiss()
                 }
@@ -177,6 +201,15 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun validateImageSize(bitmap: Bitmap): Boolean {
+        val maxSizeKB = 600
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val array = byteArrayOutputStream.toByteArray()
+        val fileSizeInKB = array.size / 1024
+        return fileSizeInKB <= maxSizeKB
     }
 
     private fun bitmapToString(bitmap: Bitmap?): String {
@@ -192,21 +225,36 @@ class EditProfileActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Kotlin")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == GALLERY_CHANGE_PROFILE && resultCode == RESULT_OK) {
             val uri: Uri = data?.data ?: return
 
-            circleImageView.setImageURI(uri)
+            CropImage.activity(uri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(1, 1)
+                .setCropShape(CropImageView.CropShape.OVAL) // Ubah bentuk pemangkasan sesuai kebutuhan Anda
+                .start(this)
+        }
 
-            try {
-                val contentResolver = contentResolver
-                bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-            } catch (e: IOException) {
-                e.printStackTrace()
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            val result = CropImage.getActivityResult(data)
+            if (resultCode == RESULT_OK) {
+                val croppedUri = result.uri
+                try {
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, croppedUri)
+                    circleImageView.setImageBitmap(bitmap)
+                    this.bitmap = bitmap
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                val error = result.error
+                Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun checkPermissionAndSelectPhoto() {
+    private fun checkPermissionPhoto() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),

@@ -14,6 +14,7 @@ import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
 import com.abdi.blogapp.model.Like
 import com.abdi.blogapp.ui.adapter.LikeAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ import kotlinx.coroutines.withContext
 
 class LikeActivity : AppCompatActivity() {
     private var postId = 0
+    private lateinit var view: View
     private lateinit var recyclerView: RecyclerView
     private lateinit var arrayList: ArrayList<Like>
     private lateinit var adapter: LikeAdapter
@@ -63,11 +65,8 @@ class LikeActivity : AppCompatActivity() {
     private fun getLikes(postId: Int) {
         refreshLayout.isRefreshing = true
 
-        val authorization = "Bearer ${sharedPref.getString("token", "") ?: run {
-            Toast.makeText(this, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_LONG).show()
-            redirectToLogin()
-            return
-        }}"
+        val token = sharedPref.getString("token", "") ?: ""
+        val authorization = "Bearer $token"
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -81,16 +80,14 @@ class LikeActivity : AppCompatActivity() {
                             arrayList.addAll(getLike)
                             adapter.notifyDataSetChanged()
                         } else {
-                            if (response.code() == 401) {
-                                redirectToLogin()
-                                Toast.makeText(this@LikeActivity, "Session berakhir. Silakan login kembali.", Toast.LENGTH_LONG).show()
-                                return@withContext
-                            } else {
-                                Toast.makeText(this@LikeActivity, "Operasi gagal, silahkan coba lagi", Toast.LENGTH_SHORT).show()
-                            }
+                            Toast.makeText(this@LikeActivity, "Operasi gagal, silahkan coba lagi", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(this@LikeActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 401) {
+                        val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Login") {
+                            redirectToLogin()
+                        }
+                        snackbar.show()
                     }
                 }
             } catch (e: Exception) {

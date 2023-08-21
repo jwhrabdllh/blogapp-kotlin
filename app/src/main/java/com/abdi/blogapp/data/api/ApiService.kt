@@ -2,15 +2,9 @@ package com.abdi.blogapp.data.api
 
 import com.abdi.blogapp.data.response.*
 import com.abdi.blogapp.utils.Constant
+import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ApiService {
     @FormUrlEncoded
@@ -56,10 +50,10 @@ interface ApiService {
     ): Response<PostResponse>
 
     @FormUrlEncoded
-    @PUT(Constant.UPDATE_POST)
+    @PUT(Constant.UPDATE_POST + "{id}")
     suspend fun editPost(
         @Header("Authorization") token: String,
-        @Field("id") id: Int,
+        @Path("id") id: Int,
         @Field("title") title: String,
         @Field("desc") desc: String
     ): Response<EditPostResponse>
@@ -74,10 +68,11 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<LogoutResponse>
 
-    @GET(Constant.GET_POSTS)
-    suspend fun getPosts(
-        @Header("Authorization") token: String
-    ): Response<GetPostsResponse>
+    @GET(Constant.GET_PAGINATION)
+    fun getPagination(
+        @Header("Authorization") token: String,
+        @QueryMap params: HashMap<String, String>
+    ): Call<PostsPaginationResponse>
 
     @DELETE(Constant.DELETE_POST + "{id}")
     suspend fun deletePost(

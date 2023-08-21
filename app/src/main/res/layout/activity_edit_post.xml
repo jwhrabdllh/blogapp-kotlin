@@ -28,7 +28,7 @@
             android:text="@string/title_editpost"
             android:fontFamily="@font/karla_bold"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_16ssp" />
+            android:textSize="@dimen/_15ssp" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 

@@ -30,7 +30,7 @@
         android:id="@+id/txtLayoutEmailLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_9sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText

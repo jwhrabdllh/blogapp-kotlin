@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/tbPostLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_1sdp"
+        android:theme="@style/Theme.BottomAppbar"
+        app:title=" ">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@android:color/transparent"
+            android:onClick="goBack"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:text="Feeds"
+            android:textSize="@dimen/_16ssp"
+            android:fontFamily="@font/karla_bold"
+            android:textColor="@color/colorHitamMuda"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipePostLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tbPostLinear">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/llSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/edtSearchPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_42sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
+                    android:background="@drawable/bg_search"
+                    android:clickable="true"
+                    android:drawableEnd="@drawable/ic_search"
+                    android:focusable="true"
+                    android:fontFamily="@font/montserrat_smbold"
+                    android:hint="@string/name_search"
+                    android:paddingStart="@dimen/_18sdp"
+                    android:paddingEnd="@dimen/_12sdp"
+                    android:textSize="@dimen/_13ssp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPostLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnCreatePost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/_15sdp"
+        android:src="@drawable/ic_add"
+        app:tint="@color/colorWhite"
+        app:backgroundTint="@color/colorButton" />
+
+</RelativeLayout>

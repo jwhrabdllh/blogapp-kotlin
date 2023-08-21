@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/karla_bold"
             android:textColor="@color/colorHitamMuda"
-            android:textSize="@dimen/_16ssp" />
+            android:textSize="@dimen/_15ssp" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 

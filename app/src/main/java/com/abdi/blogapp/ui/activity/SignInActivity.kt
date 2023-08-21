@@ -31,6 +31,7 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var tvDaftar: TextView
     private lateinit var dialog: ProgressDialog
+    private val errorValidation: MutableList<String> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +54,8 @@ class SignInActivity : AppCompatActivity() {
         }
 
         btnLogin.setOnClickListener {
-            if (validate()) {
+            validate()
+            if (errorValidation.isEmpty()) {
                 login()
             }
         }
@@ -68,13 +70,6 @@ class SignInActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                val email = edtEmail.text.toString()
-
-                if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    layoutEmail.error = null
-                } else {
-                    layoutEmail.error = "Email tidak valid"
-                }
             }
         })
 
@@ -92,15 +87,29 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun validate(): Boolean {
+        errorValidation.clear()
+
         if (edtEmail.text.toString().isEmpty()) {
-            layoutEmail.error = "Email harus diisi"
-            return false
+            errorValidation.add("Email")
         }
         if (edtPassword.text.toString().length < 6) {
-            layoutPassword.error = "Password minimal 6 karakter"
+            errorValidation.add("Password")
+        }
+
+        if (errorValidation.isNotEmpty()) {
+            showMessageErrorValidation()
             return false
         }
         return true
+    }
+
+    private fun showMessageErrorValidation() {
+        if (errorValidation.contains("Email")) {
+            layoutEmail.error = "Email tidak boleh kosong"
+        }
+        if (errorValidation.contains("Password")) {
+            layoutPassword.error = "Password minimal 6 karakter"
+        }
     }
 
     private fun login() {
@@ -116,9 +125,7 @@ class SignInActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         val loginResponse = response.body()
-                        if (loginResponse == null || !loginResponse.success) {
-                            Toast.makeText(this@SignInActivity, "Email atau password salah", Toast.LENGTH_SHORT).show()
-                        } else {
+                        if (loginResponse != null && loginResponse.success) {
                             val user = loginResponse.user
                             if (user != null) {
                                 val userPref = getSharedPreferences("user", MODE_PRIVATE)
@@ -137,8 +144,8 @@ class SignInActivity : AppCompatActivity() {
                                 Toast.makeText(this@SignInActivity, "Login sukses", Toast.LENGTH_SHORT).show()
                             }
                         }
-                    } else {
-                        Toast.makeText(this@SignInActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 401 || response.code() == 422) {
+                        Toast.makeText(this@SignInActivity, "Email atau password salah", Toast.LENGTH_SHORT).show()
                     }
                     dialog.dismiss()
                 }

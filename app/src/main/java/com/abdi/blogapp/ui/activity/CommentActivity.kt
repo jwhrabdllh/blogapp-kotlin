@@ -19,6 +19,7 @@ import com.abdi.blogapp.model.User
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
 import com.abdi.blogapp.utils.Constant
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ import kotlinx.coroutines.withContext
 
 class CommentActivity : AppCompatActivity() {
     private var postId = 0
+    private lateinit var view: View
     private lateinit var edtAddComment: EditText
     private lateinit var recyclerView: RecyclerView
     private lateinit var arrayList: ArrayList<Comment>
@@ -72,11 +74,6 @@ class CommentActivity : AppCompatActivity() {
         refreshLayout.isRefreshing = true
 
         val token = sharedPref.getString("token", "")
-        if (token.isNullOrEmpty()) {
-            Toast.makeText(this, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_LONG).show()
-            redirectToLogin()
-            return
-        }
         val authorization = "Bearer $token"
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -90,17 +87,13 @@ class CommentActivity : AppCompatActivity() {
                             arrayList.clear()
                             arrayList.addAll(newComments)
                             adapter.notifyDataSetChanged()
-                        } else {
-                            if (response.code() == 401) {
-                                redirectToLogin()
-                                Toast.makeText(this@CommentActivity, "Session berakhir. Silakan login kembali.", Toast.LENGTH_LONG).show()
-                                return@withContext
-                            } else {
-                                Toast.makeText(this@CommentActivity, "Operasi gagal, silahkan coba lagi", Toast.LENGTH_SHORT).show()
-                            }
                         }
-                    } else {
-                        Toast.makeText(this@CommentActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                    } else if (response.code() == 422 && response.code() == 401) {
+                        val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                        snackbar.setAction("Login") {
+                            redirectToLogin()
+                        }
+                        snackbar.show()
                     }
                 }
             } catch (e: Exception) {
@@ -118,11 +111,8 @@ class CommentActivity : AppCompatActivity() {
         dialog.setMessage("Loading")
         dialog.show()
 
-        val authorization = "Bearer ${sharedPref.getString("token", "") ?: run {
-            Toast.makeText(this, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_LONG).show()
-            redirectToLogin()
-            return
-        }}"
+        val token = sharedPref.getString("token", "") ?: ""
+        val authorization = "Bearer $token"
 
         val idPost = postId
         val getComment = edtAddComment.text.toString().trim()
@@ -170,8 +160,12 @@ class CommentActivity : AppCompatActivity() {
                             } else {
                                 Toast.makeText(this@CommentActivity, "Operasi gagal, silahkan coba lagi", Toast.LENGTH_SHORT).show()
                             }
-                        } else {
-                            Toast.makeText(this@CommentActivity, "Terjadi kesalahan pada server", Toast.LENGTH_SHORT).show()
+                        } else if (response.code() == 422 && response.code() == 401) {
+                            val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                            snackbar.setAction("Login") {
+                                redirectToLogin()
+                            }
+                            snackbar.show()
                         }
                         dialog.dismiss()
                     }
@@ -187,9 +181,7 @@ class CommentActivity : AppCompatActivity() {
     }
 
     private fun redirectToLogin() {
-        sharedPref.edit()
-            .remove("token")
-            .apply()
+        sharedPref.edit().remove("token").apply()
 
         val intent = Intent(this, SignInActivity::class.java)
         startActivity(intent)
