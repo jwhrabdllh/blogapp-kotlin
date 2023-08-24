@@ -5,9 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -16,17 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
-import com.abdi.blogapp.data.response.GetPostsResponse
 import com.abdi.blogapp.data.response.PostsPaginationResponse
 import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.ui.adapter.PostLinearAdapter
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,6 +34,7 @@ class PostLinearActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshList
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var originalList: ArrayList<Post>
     private lateinit var sharedPref: SharedPreferences
+    private lateinit var toolbar: MaterialToolbar
     private lateinit var refreshLayout: SwipeRefreshLayout
     private lateinit var adapter: PostLinearAdapter
     private var page = 1
@@ -62,6 +56,8 @@ class PostLinearActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshList
         refreshLayout = findViewById(R.id.swipePostLinear)
         refreshLayout.setOnRefreshListener(this)
         progressBar = findViewById(R.id.progressBar)
+        toolbar = findViewById(R.id.tbPostLinear)
+        setSupportActionBar(toolbar)
         sharedPref = applicationContext.getSharedPreferences("user", MODE_PRIVATE)
         originalList = ArrayList()
 
@@ -121,7 +117,7 @@ class PostLinearActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshList
         val token = sharedPref.getString("token", "") ?: ""
         val authorization = "Bearer $token"
 
-        ApiConfig.apiService.getPagination(authorization, params).enqueue(object : Callback<PostsPaginationResponse>{
+        ApiConfig.apiService.getPosts(authorization, params).enqueue(object : Callback<PostsPaginationResponse>{
             override fun onResponse(call: Call<PostsPaginationResponse>, response: Response<PostsPaginationResponse>) {
                 if (response.code() == 422 && response.code() == 401) {
                     val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
@@ -181,6 +177,23 @@ class PostLinearActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshList
         arrayList.addAll(filteredList)
         adapter.notifyDataSetChanged()
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.post_linear_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.grid_post -> {
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     private fun redirectToLogin() {
         sharedPref.edit().remove("token").apply()

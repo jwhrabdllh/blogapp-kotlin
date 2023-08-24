@@ -119,7 +119,7 @@ class PostLinearAdapter(private val context: Context, private val list: ArrayLis
         }
 
         holder.btnComment.setOnClickListener {
-            val i = Intent(context as HomeActivity, CommentActivity::class.java)
+            val i = Intent(context, CommentActivity::class.java)
             i.putExtra("postId", post.id)
             i.putExtra("postPosition", position)
             context.startActivity(i)

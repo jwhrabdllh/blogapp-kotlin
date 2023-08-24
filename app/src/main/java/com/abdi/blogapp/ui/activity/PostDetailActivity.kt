@@ -15,6 +15,7 @@ import com.abdi.blogapp.data.api.ApiConfig
 import com.abdi.blogapp.model.Comment
 import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.utils.Constant
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PostDetailActivity : AppCompatActivity() {
+    private lateinit var view: View
     private lateinit var ivPostPhoto: ImageView
     private lateinit var tvPostTitle: TextView
     private lateinit var tvPostDesc: TextView
@@ -68,6 +70,18 @@ class PostDetailActivity : AppCompatActivity() {
 
         commentsCount = post.comments
 
+        tvUsername.setOnClickListener {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.putExtra("userId", post.user.id)
+            startActivity(intent)
+        }
+
+        ivUserPhoto.setOnClickListener {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.putExtra("userId", post.user.id)
+            startActivity(intent)
+        }
+
         tvLikes.setOnClickListener {
             val i = Intent(this, LikeActivity::class.java)
             i.putExtra("postId", post.id)
@@ -83,11 +97,8 @@ class PostDetailActivity : AppCompatActivity() {
             )
 
             val postId = post.id
-            val authorization = "Bearer ${sharedPref.getString("token", "") ?: run {
-                Toast.makeText(this, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_LONG).show()
-                redirectToLogin()
-                return@setOnClickListener
-            }}"
+            val token = sharedPref.getString("token", "") ?: ""
+            val authorization = "Bearer $token"
 
             CoroutineScope(Dispatchers.IO).launch {
                 try {
@@ -107,6 +118,12 @@ class PostDetailActivity : AppCompatActivity() {
                                     if (post.selfLike) R.drawable.ic_fav_red else R.drawable.ic_fav_border
                                 )
                             }
+                        } else if (response.code() == 422 || response.code() == 401) {
+                            val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                            snackbar.setAction("Login") {
+                                redirectToLogin()
+                            }
+                            snackbar.show()
                         }
                     }
                 } catch (e: Exception) {

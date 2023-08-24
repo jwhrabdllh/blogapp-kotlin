@@ -2,7 +2,7 @@ package com.abdi.blogapp.ui.adapter
 
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.SharedPreferences
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.abdi.blogapp.R
 import com.abdi.blogapp.model.Like
+import com.abdi.blogapp.ui.activity.UserProfileActivity
 import com.abdi.blogapp.utils.Constant
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -39,6 +40,18 @@ class LikeAdapter(private val context: Context, private val list: ArrayList<Like
         Picasso.get().load(Constant.BASE_URL + "storage/profiles/" + like.user.photo).into(holder.ivPhotoUser)
         holder.tvNameUser.text = like.user.name + " " + like.user.lastname
         holder.tvDate.text = like.date
+
+        holder.tvNameUser.setOnClickListener {
+            val intent = Intent(context, UserProfileActivity::class.java)
+            intent.putExtra("userId", like.user.id)
+            context.startActivity(intent)
+        }
+
+        holder.ivPhotoUser.setOnClickListener {
+            val intent = Intent(context, UserProfileActivity::class.java)
+            intent.putExtra("userId", like.user.id)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

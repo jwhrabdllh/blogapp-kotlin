@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_height="@dimen/_72sdp"
+        android:layout_height="@dimen/_77sdp"
         android:layout_width="@dimen/_140sdp"
         android:layout_marginEnd="@dimen/_2sdp"
         android:id="@+id/ivMyPost"

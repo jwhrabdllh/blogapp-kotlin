@@ -7,9 +7,9 @@ object Constant {
     const val LOGIN = "$HOME/login"
     const val LOGOUT = "$HOME/logout"
     const val SIGN_UP_PHOTO = "$HOME/add_photo_screen"
-    const val USER_PROFILE = "$HOME/user_profile"
+    const val EDIT_PROFILE = "$HOME/edit_profile"
     const val POST = "$HOME/post"
-    const val GET_PAGINATION = "$POST/get_pagination"
+    const val GET_POSTS = "$POST/get_posts"
     const val ADD_POST = "$POST/create"
     const val UPDATE_POST = "$POST/update/"
     const val LIKE_POST = "$POST/like"
@@ -19,4 +19,6 @@ object Constant {
     const val CREATE_COMMENT = "$HOME/comment/create"
     const val DELETE_COMMENT = "$HOME/comment/delete/"
     const val MY_POST = "$POST/my_post"
+    const val USER = "$HOME/user"
+    const val GET_USER_PROFILE = "$USER/profile/"
 }

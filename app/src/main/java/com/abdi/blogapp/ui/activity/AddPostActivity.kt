@@ -132,7 +132,7 @@ class AddPostActivity : AppCompatActivity() {
     }
 
     private fun validateImageSize(bitmap: Bitmap): Boolean {
-        val maxSizeKB = 500
+        val maxSizeKB = 1024
         val byteArrayOutputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
         val array = byteArrayOutputStream.toByteArray()

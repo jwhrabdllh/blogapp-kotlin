@@ -22,13 +22,8 @@ import com.abdi.blogapp.data.response.PostsPaginationResponse
 import com.abdi.blogapp.ui.activity.HomeActivity
 import com.abdi.blogapp.ui.activity.PostLinearActivity
 import com.abdi.blogapp.ui.activity.SignInActivity
-import com.abdi.blogapp.ui.adapter.PostLinearAdapter
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -125,7 +120,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         val params = HashMap<String, String>()
         params["page"] = page.toString()
 
-        ApiConfig.apiService.getPagination(authorization, params).enqueue(object : Callback<PostsPaginationResponse> {
+        ApiConfig.apiService.getPosts(authorization, params).enqueue(object : Callback<PostsPaginationResponse> {
             override fun onResponse(call: Call<PostsPaginationResponse>, response: Response<PostsPaginationResponse>) {
                 if (response.code() == 422 || response.code() == 401) {
                     val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
@@ -175,8 +170,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             filteredList.addAll(originalList)
         } else {
             for (post in originalList) {
-                if (post.title.toLowerCase().contains(query.toLowerCase()) ||
-                    post.user.name.toLowerCase().contains(query.toLowerCase())
+                if (post.user.name.toLowerCase().contains(query.toLowerCase())
                 ) {
                     filteredList.add(post)
                 }
@@ -188,7 +182,7 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.post_menu, menu)
+        inflater.inflate(R.menu.post_grid_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

@@ -17,22 +17,16 @@ import com.abdi.blogapp.ui.fragment.HomeFragment
 import com.abdi.blogapp.model.Comment
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
-import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.ui.activity.CommentActivity
 import com.abdi.blogapp.ui.activity.SignInActivity
+import com.abdi.blogapp.ui.activity.UserProfileActivity
 import com.abdi.blogapp.utils.Constant
-import com.android.volley.RetryPolicy
-import com.android.volley.VolleyError
-import com.android.volley.toolbox.StringRequest
-import com.android.volley.toolbox.Volley
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONException
-import org.json.JSONObject
 
 class CommentAdapter(private val context: Context, private val list: ArrayList<Comment>) :
     RecyclerView.Adapter<CommentAdapter.CommentsHolder>() {
@@ -64,6 +58,18 @@ class CommentAdapter(private val context: Context, private val list: ArrayList<C
         holder.tvName.text = comment.user.name + " " + comment.user.lastname
         holder.tvComment.text = comment.comment
         holder.tvDate.text = comment.date
+
+        holder.tvName.setOnClickListener {
+            val intent = Intent(context, UserProfileActivity::class.java)
+            intent.putExtra("userId", comment.user.id)
+            context.startActivity(intent)
+        }
+
+        holder.ivProfile.setOnClickListener {
+            val intent = Intent(context, UserProfileActivity::class.java)
+            intent.putExtra("userId", comment.user.id)
+            context.startActivity(intent)
+        }
 
         if (sharedPref.getInt("id", 0) != comment.user.id) {
             holder.btnDelete.visibility = View.GONE

@@ -36,7 +36,7 @@ class ProfileAdapter(private val context: Context, private val arrayList: ArrayL
             val intent = Intent(context, PostDetailActivity::class.java)
             intent.putExtra("post", post)
             intent.putExtra("position", position)
-            (context as HomeActivity).startActivityForResult(intent, MY_POST_REQUEST_CODE)
+            context.startActivity(intent)
         }
     }
 

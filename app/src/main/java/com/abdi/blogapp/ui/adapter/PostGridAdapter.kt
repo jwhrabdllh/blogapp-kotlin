@@ -1,9 +1,7 @@
 package com.abdi.blogapp.ui.adapter
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +9,10 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.R
-import com.abdi.blogapp.data.api.ApiConfig
 import com.abdi.blogapp.ui.activity.*
 import com.abdi.blogapp.utils.Constant
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PostGridAdapter(private val context: Context, private val list: ArrayList<Post>) :
     RecyclerView.Adapter<PostGridAdapter.PostsHolder>() {

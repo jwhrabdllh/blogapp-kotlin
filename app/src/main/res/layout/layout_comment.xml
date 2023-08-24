@@ -65,7 +65,6 @@
             android:id="@+id/tvCommentDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_1sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:fontFamily="@font/montserrat_regular"
             android:textColor="@color/colorBlack"

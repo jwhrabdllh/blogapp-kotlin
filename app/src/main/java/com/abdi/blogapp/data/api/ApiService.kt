@@ -31,7 +31,7 @@ interface ApiService {
     ): Response<SavePhotoResponse>
 
     @FormUrlEncoded
-    @POST(Constant.USER_PROFILE)
+    @POST(Constant.EDIT_PROFILE)
     suspend fun editProfile(
         @Header("Authorization") token: String,
         @Field("name") name: String,
@@ -63,13 +63,19 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<MyPostResponse>
 
+    @GET(Constant.GET_USER_PROFILE + "{id}")
+    suspend fun getUserProfile(
+        @Path("id") userId: Int,
+        @Header("Authorization") token: String
+    ): Response<UserProfileResponse>
+
     @GET(Constant.LOGOUT)
     suspend fun logout(
         @Header("Authorization") token: String
     ): Response<LogoutResponse>
 
-    @GET(Constant.GET_PAGINATION)
-    fun getPagination(
+    @GET(Constant.GET_POSTS)
+    fun getPosts(
         @Header("Authorization") token: String,
         @QueryMap params: HashMap<String, String>
     ): Call<PostsPaginationResponse>

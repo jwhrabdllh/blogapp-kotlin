@@ -67,7 +67,7 @@
         android:layout_marginBottom="@dimen/_18sdp"
         android:background="@drawable/btn_shape_round"
         android:fontFamily="@font/karla_bold"
-        android:text="@string/lanjutkan"
+        android:text="@string/mulai"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_15ssp"

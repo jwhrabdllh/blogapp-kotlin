@@ -7,7 +7,6 @@ import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.TextView
@@ -80,11 +79,6 @@ class ProfileFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun getProfileUser() {
         val token = sharedPref.getString("token", "") ?: ""
-        if (token.isEmpty()) {
-            Toast.makeText(requireContext(), "Session berakhir. Silahkan login kembali.", Toast.LENGTH_SHORT).show()
-            redirectToLogin()
-            return
-        }
         val authorization = "Bearer $token"
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -129,7 +123,7 @@ class ProfileFragment : Fragment() {
                             recyclerView.adapter = adapter
                             imgUrl = Constant.BASE_URL + "storage/profiles/" + mUser.photo
                         }
-                    } else if (response.code() == 422 && response.code() == 401) {
+                    } else if (response.code() == 422 || response.code() == 401) {
                         val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
                         snackbar.setAction("Login") {
                             redirectToLogin()
@@ -167,11 +161,6 @@ class ProfileFragment : Fragment() {
         dialog.show()
 
         val token = sharedPref.getString("token", "") ?: ""
-        if (token.isEmpty()) {
-            Toast.makeText(requireContext(), "Token tidak valid", Toast.LENGTH_SHORT).show()
-            redirectToLogin()
-            return
-        }
         val authorization = "Bearer $token"
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -191,7 +180,7 @@ class ProfileFragment : Fragment() {
                             Toast.makeText(requireContext(), "Gagal logout", Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                         }
-                    } else if (response.code() == 422 && response.code() == 401) {
+                    } else if (response.code() == 422 || response.code() == 401) {
                         val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
                         snackbar.setAction("Login") {
                             redirectToLogin()
@@ -228,5 +217,4 @@ class ProfileFragment : Fragment() {
         startActivity(intent)
         requireActivity().finish()
     }
-
 }
