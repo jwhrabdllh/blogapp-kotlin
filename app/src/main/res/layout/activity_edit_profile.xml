@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/karla_smbold"
                 android:hint="@string/nama_depan"
-                android:inputType="text"/>
+                android:inputType="textPersonName|textCapWords"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,7 +86,7 @@
                 android:id="@+id/txtEditLastnameProfile"
                 android:fontFamily="@font/karla_smbold"
                 android:hint="@string/nama_belakang"
-                android:inputType="text"/>
+                android:inputType="textPersonName|textCapWords"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

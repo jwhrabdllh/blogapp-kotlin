@@ -12,7 +12,7 @@ import com.abdi.blogapp.R
 import com.abdi.blogapp.model.Like
 import com.abdi.blogapp.ui.activity.UserProfileActivity
 import com.abdi.blogapp.utils.Constant
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 
 class LikeAdapter(private val context: Context, private val list: ArrayList<Like>) :
@@ -37,7 +37,9 @@ class LikeAdapter(private val context: Context, private val list: ArrayList<Like
 
     override fun onBindViewHolder(holder: LikeAdapter.LikesHolder, position: Int) {
         val like = list[position]
-        Picasso.get().load(Constant.BASE_URL + "storage/profiles/" + like.user.photo).into(holder.ivPhotoUser)
+        Glide.with(context)
+            .load(Constant.BASE_URL + "storage/profiles/" + like.user.photo)
+            .into(holder.ivPhotoUser)
         holder.tvNameUser.text = like.user.name + " " + like.user.lastname
         holder.tvDate.text = like.date
 

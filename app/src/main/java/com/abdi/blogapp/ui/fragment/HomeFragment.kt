@@ -170,7 +170,8 @@ class HomeFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             filteredList.addAll(originalList)
         } else {
             for (post in originalList) {
-                if (post.user.name.toLowerCase().contains(query.toLowerCase())
+                val username = post.user.name + " " + post.user.lastname
+                if (username.toLowerCase().contains(query.toLowerCase())
                 ) {
                     filteredList.add(post)
                 }

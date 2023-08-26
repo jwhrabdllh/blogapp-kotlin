@@ -98,7 +98,7 @@ class EditPostActivity : AppCompatActivity() {
                             finish()
 
                         }
-                    } else if (response.code() == 422 && response.code() == 401) {
+                    } else if (response.code() == 422 || response.code() == 401) {
                         val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
                         snackbar.setAction("Login") {
                             redirectToLogin()

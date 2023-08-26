@@ -21,7 +21,7 @@ import com.abdi.blogapp.ui.activity.CommentActivity
 import com.abdi.blogapp.ui.activity.SignInActivity
 import com.abdi.blogapp.ui.activity.UserProfileActivity
 import com.abdi.blogapp.utils.Constant
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +54,9 @@ class CommentAdapter(private val context: Context, private val list: ArrayList<C
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: CommentsHolder, position: Int) {
         val comment = list[position]
-        Picasso.get().load(Constant.BASE_URL + "storage/profiles/" + comment.user.photo).into(holder.ivProfile)
+        Glide.with(context)
+            .load(Constant.BASE_URL + "storage/profiles/" + comment.user.photo)
+            .into(holder.ivProfile)
         holder.tvName.text = comment.user.name + " " + comment.user.lastname
         holder.tvComment.text = comment.comment
         holder.tvDate.text = comment.date

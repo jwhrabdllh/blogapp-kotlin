@@ -68,7 +68,7 @@ class SignUpPhotoActivity : AppCompatActivity() {
 
         btnContinue.setOnClickListener {
             if (bitmap == null) {
-                Toast.makeText(this, "Wajib menambahkan foto", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Wajib menambahkan foto profil", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             } else {
                 savePhotoProfile()

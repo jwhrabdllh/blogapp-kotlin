@@ -119,7 +119,7 @@ class PostLinearActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshList
 
         ApiConfig.apiService.getPosts(authorization, params).enqueue(object : Callback<PostsPaginationResponse>{
             override fun onResponse(call: Call<PostsPaginationResponse>, response: Response<PostsPaginationResponse>) {
-                if (response.code() == 422 && response.code() == 401) {
+                if (response.code() == 422 || response.code() == 401) {
                     val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
                     snackbar.setAction("Login") {
                         redirectToLogin()
@@ -166,8 +166,9 @@ class PostLinearActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshList
             filteredList.addAll(originalList)
         } else {
             for (post in originalList) {
+                val username = post.user.name + " " + post.user.lastname
                 if (post.title.toLowerCase().contains(query.toLowerCase()) ||
-                    post.user.name.toLowerCase().contains(query.toLowerCase())
+                    username.toLowerCase().contains(query.toLowerCase())
                 ) {
                     filteredList.add(post)
                 }
@@ -193,7 +194,6 @@ class PostLinearActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshList
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
     private fun redirectToLogin() {
         sharedPref.edit().remove("token").apply()

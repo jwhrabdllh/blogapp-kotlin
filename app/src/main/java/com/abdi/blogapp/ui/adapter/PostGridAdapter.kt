@@ -11,7 +11,7 @@ import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.R
 import com.abdi.blogapp.ui.activity.*
 import com.abdi.blogapp.utils.Constant
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 
 class PostGridAdapter(private val context: Context, private val list: ArrayList<Post>) :
@@ -28,8 +28,12 @@ class PostGridAdapter(private val context: Context, private val list: ArrayList<
 
     override fun onBindViewHolder(holder: PostsHolder, position: Int) {
         val post = list[position]
-        Picasso.get().load(Constant.BASE_URL + "storage/profiles/" + post.user.photo).into(holder.imgProfile)
-        Picasso.get().load(Constant.BASE_URL + "storage/posts/" + post.photo).into(holder.imgPost)
+        Glide.with(context)
+            .load(Constant.BASE_URL + "storage/profiles/" + post.user.photo)
+            .into(holder.imgProfile)
+        Glide.with(context)
+            .load(Constant.BASE_URL + "storage/posts/" + post.photo)
+            .into(holder.imgPost)
         holder.tvName.text = post.user.name + " " + post.user.lastname
         holder.tvComments.text = post.comments.toString()
         holder.tvLike.text = post.likes.toString()
@@ -40,6 +44,10 @@ class PostGridAdapter(private val context: Context, private val list: ArrayList<
             intent.putExtra("position", position)
             context.startActivityForResult(intent, POST_DETAIL_REQUEST_CODE)
         }
+
+        holder.btnLike.setImageResource(
+            if (post.selfLike) R.drawable.ic_fav_red else R.drawable.ic_fav_border
+        )
     }
 
     override fun getItemCount(): Int {
@@ -47,6 +55,7 @@ class PostGridAdapter(private val context: Context, private val list: ArrayList<
     }
 
     inner class PostsHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val btnLike: ImageButton = itemView.findViewById(R.id.btnPostGridLike)
         val tvName: TextView = itemView.findViewById(R.id.tvPostGridName)
         val tvLike: TextView = itemView.findViewById(R.id.tvPostGridLikes)
         val tvComments: TextView = itemView.findViewById(R.id.tvPostGridComments)

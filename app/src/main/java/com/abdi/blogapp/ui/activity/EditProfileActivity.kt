@@ -21,10 +21,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.squareup.picasso.Picasso
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import de.hdodenhof.circleimageview.CircleImageView
@@ -77,7 +77,9 @@ class EditProfileActivity : AppCompatActivity() {
         dialog.setCancelable(false)
         sharedPref = applicationContext.getSharedPreferences("user", MODE_PRIVATE)
 
-        Picasso.get().load(intent.getStringExtra("imgUrl")).into(circleImageView)
+        Glide.with(this)
+            .load(intent.getStringExtra("imgUrl"))
+            .into(circleImageView)
         edtName.setText(sharedPref.getString("name", ""))
         edtLastname.setText(sharedPref.getString("lastname", ""))
         edtEmail.setText(sharedPref.getString("email", ""))

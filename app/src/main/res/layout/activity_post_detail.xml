@@ -120,7 +120,6 @@
                 android:fontFamily="@font/averia_bold"
                 android:textColor="@color/colorBlack"
                 android:text="@string/post_title"
-                android:maxLength="50"
                 android:textSize="@dimen/_17ssp" />
 
             <TextView

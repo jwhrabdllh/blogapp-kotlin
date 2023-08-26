@@ -52,7 +52,7 @@
             android:textSize="@dimen/_14ssp"
             android:fontFamily="@font/karla_smbold"
             android:textColor="@color/colorHitamMuda"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName|textCapWords" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

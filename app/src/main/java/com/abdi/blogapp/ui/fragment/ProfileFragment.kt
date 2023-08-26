@@ -23,9 +23,9 @@ import com.abdi.blogapp.ui.activity.HomeActivity
 import com.abdi.blogapp.ui.activity.SignInActivity
 import com.abdi.blogapp.ui.adapter.ProfileAdapter
 import com.abdi.blogapp.utils.Constant
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -116,7 +116,8 @@ class ProfileFragment : Fragment() {
 
                             tvName.text = mUser.name + " " + mUser.lastname
                             tvPostCount.text = arrayList.size.toString()
-                            Picasso.get().load(Constant.BASE_URL + "storage/profiles/" + mUser.photo)
+                            Glide.with(requireContext())
+                                .load(Constant.BASE_URL + "storage/profiles/" + mUser.photo)
                                 .into(ivProfile)
 
                             adapter = ProfileAdapter(requireContext(), arrayList)

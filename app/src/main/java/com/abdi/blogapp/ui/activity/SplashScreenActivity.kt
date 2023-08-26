@@ -24,7 +24,7 @@ class SplashScreenActivity : AppCompatActivity() {
             } else {
                 isResume()
             }
-        }, 3000)
+        }, 2500)
     }
 
     private fun isResume() {
@@ -38,5 +38,6 @@ class SplashScreenActivity : AppCompatActivity() {
         }
 
         startActivity(Intent(this@SplashScreenActivity, SignInActivity::class.java))
+        finish()
     }
 }

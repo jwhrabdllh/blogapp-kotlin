@@ -16,8 +16,8 @@ import com.abdi.blogapp.data.api.ApiConfig
 import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.ui.activity.*
 import com.abdi.blogapp.utils.Constant
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,9 +55,12 @@ class PostLinearAdapter(private val context: Context, private val list: ArrayLis
 
     override fun onBindViewHolder(holder: PostsHolder, position: Int) {
         val post = list[position]
-        Picasso.get().load(Constant.BASE_URL + "storage/profiles/" + post.user.photo)
+        Glide.with(context)
+            .load(Constant.BASE_URL + "storage/profiles/" + post.user.photo)
             .into(holder.imgProfile)
-        Picasso.get().load(Constant.BASE_URL + "storage/posts/" + post.photo).into(holder.imgPost)
+        Glide.with(context)
+            .load(Constant.BASE_URL + "storage/posts/" + post.photo)
+            .into(holder.imgPost)
         holder.tvName.text = post.user.name + " " + post.user.lastname
         holder.tvTitle.text = post.title
         holder.tvDate.text = post.date

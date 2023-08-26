@@ -15,8 +15,8 @@ import com.abdi.blogapp.data.api.ApiConfig
 import com.abdi.blogapp.model.Comment
 import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.utils.Constant
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -187,11 +187,6 @@ class PostDetailActivity : AppCompatActivity() {
         builder.setPositiveButton("Hapus") { _, _ ->
 
             val token = sharedPref.getString("token", "") ?: ""
-            if (token.isEmpty()) {
-                Toast.makeText(this, "Session berakhir. Silahkan login kembali.", Toast.LENGTH_SHORT).show()
-                redirectToLogin()
-                return@setPositiveButton
-            }
             val authorization = "Bearer $token"
 
             CoroutineScope(Dispatchers.IO).launch {
@@ -206,7 +201,13 @@ class PostDetailActivity : AppCompatActivity() {
                                 setResult(Activity.RESULT_OK, intent)
                                 finish()
                             }
-                        } else {
+                        } else if (response.code() == 401) {
+                            val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
+                            snackbar.setAction("Login") {
+                                redirectToLogin()
+                            }
+                            snackbar.show()
+                        } else if (response.code() == 422) {
                             Toast.makeText(this@PostDetailActivity, "Gagal menghapus post", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -231,8 +232,12 @@ class PostDetailActivity : AppCompatActivity() {
 
         Log.d("PostDetailActivity", "Post ID: ${post.id}, Position: $position")
 
-        Picasso.get().load(Constant.BASE_URL + "storage/posts/" + post.photo).into(ivPostPhoto)
-        Picasso.get().load(Constant.BASE_URL + "storage/profiles/" + post.user.photo).into(ivUserPhoto)
+        Glide.with(this)
+            .load(Constant.BASE_URL + "storage/posts/" + post.photo)
+            .into(ivPostPhoto)
+        Glide.with(this)
+            .load(Constant.BASE_URL + "storage/profiles/" + post.user.photo)
+            .into(ivUserPhoto)
         tvPostTitle.text = post.title
         tvPostDesc.text = post.desc
         tvPostDate.text = post.date

@@ -68,7 +68,7 @@
             android:textColor="@color/colorHitamMuda"
             android:textColorHint="@color/colorLightGrey"
             android:fontFamily="@font/nunitosans_regular"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|textCapWords"
             android:textSize="@dimen/_14ssp" />
 
         <ImageView

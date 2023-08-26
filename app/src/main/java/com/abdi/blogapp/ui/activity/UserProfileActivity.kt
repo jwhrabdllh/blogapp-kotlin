@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.abdi.blogapp.R
 import com.abdi.blogapp.data.api.ApiConfig
-import com.abdi.blogapp.model.Post
 import com.abdi.blogapp.ui.adapter.ProfileAdapter
 import com.abdi.blogapp.utils.Constant
+import com.bumptech.glide.Glide
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -72,7 +71,9 @@ class UserProfileActivity : AppCompatActivity() {
                             val newUser = userProfileResponse.user
                             val userPosts = userProfileResponse.posts
 
-                            Picasso.get().load(Constant.BASE_URL + "storage/profiles/" + newUser.photo).into(ivUserProfile)
+                            Glide.with(this@UserProfileActivity)
+                                .load(Constant.BASE_URL + "storage/profiles/" + newUser.photo)
+                                .into(ivUserProfile)
                             tvUserName.text = newUser.name + " " + newUser.lastname
                             tvUserPostCount.text = userPosts.size.toString()
 

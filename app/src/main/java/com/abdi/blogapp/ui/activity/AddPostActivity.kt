@@ -112,7 +112,7 @@ class AddPostActivity : AppCompatActivity() {
                         } else {
                             Toast.makeText(this@AddPostActivity, "Gagal menambahkan post", Toast.LENGTH_SHORT).show()
                         }
-                    } else if (response.code() == 422 && response.code() == 401) {
+                    } else if (response.code() == 422 || response.code() == 401) {
                         val snackbar = Snackbar.make(view, "Session berakhir. Silahkan login kembali.", Snackbar.LENGTH_INDEFINITE)
                         snackbar.setAction("Login") {
                             redirectToLogin()
